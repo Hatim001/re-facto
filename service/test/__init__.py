@@ -1,0 +1,1 @@
+from service.test.test_bot import BotTestCase

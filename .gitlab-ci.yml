@@ -1,0 +1,102 @@
+stages:
+  - test
+  - quality
+  - build
+  - deploy
+
+variables:
+  NODE: node:19-bullseye
+  FRONTEND_BUILD_PATH: "static/refactor-ui/build/"
+  INSTANCE_BUILD_PATH: "/home/deployer/Group10/static/refactor-ui/"
+
+include:
+  - template: Code-Quality.gitlab-ci.yml
+
+code-test:
+  image: python:3.11.4-bullseye
+  stage: test
+  before_script:
+    - python3 -m pip install poetry
+    - python3 -m poetry install
+    - source $(poetry env info --path)/bin/activate
+    - cat ${ENVIRONMENT_CONFIG} >> .env
+  script:
+    - python3 manage.py check
+    - python3 manage.py test
+  tags:
+    - code-test
+
+code_quality:
+  needs:
+    - code-test
+  stage: quality
+  image: docker:20.10.16
+  services:
+    - docker:20.10.16-dind
+  tags:
+    - cq-sans-dind
+  variables:
+    CODE_QUALITY_IMAGE: registry.gitlab.com/gitlab-org/ci-cd/codequality:latest
+    DOCKER_DRIVER: overlay2
+    DOCKER_HOST: tcp://docker:2375
+    DOCKER_TLS_CERTDIR: ""
+    REPORT_FORMAT: html
+  artifacts:
+    paths: [gl-code-quality-report.html]
+
+app-build:
+  needs:
+    - code-test
+  image: $NODE
+  stage: build
+  before_script:
+    - cd static/refactor-ui
+    - cat ${FRONTEND_ENVIRONMENT} >> .env
+    - yarn install
+  script:
+    - unset CI
+    - yarn build
+  tags:
+    - code-build
+  artifacts:
+    untracked: false
+    when: on_success
+    expire_in: "30 days"
+    paths:
+      - $FRONTEND_BUILD_PATH
+  only:
+    - main
+
+backend-deploy:
+  needs:
+    - code-test
+  stage: deploy
+  image: alpine:latest
+  before_script:
+    - chmod og= $SSH_PRIVATE_KEY
+    - apk update && apk add openssh-client
+  script:
+    - ssh -i $SSH_PRIVATE_KEY -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP "./deploy_prod.sh"
+  tags:
+    - backend-build-deploy
+  environment:
+    name: production
+  only:
+    - main
+
+frontend-deploy:
+  needs:
+    - backend-deploy
+    - app-build
+  stage: deploy
+  image: alpine:latest
+  before_script:
+    - chmod og= $SSH_PRIVATE_KEY
+    - apk update && apk add openssh-client
+  script:
+    - scp -i $SSH_PRIVATE_KEY -o StrictHostKeyChecking=no -r $FRONTEND_BUILD_PATH $SERVER_USER@$SERVER_IP:$INSTANCE_BUILD_PATH
+    - ssh -i $SSH_PRIVATE_KEY -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP "./deploy_prod.sh"
+  tags:
+    - frontend-build-deploy
+  only:
+    - main

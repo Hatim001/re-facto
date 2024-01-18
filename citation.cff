@@ -1,0 +1,37 @@
+cff-version: 1.2.0
+message: "Generated CFF file for project submission"
+
+authors:
+  - family-names: Gitlab.com
+    url: https://docs.gitlab.com/ee/ci/pipelines/
+    title: CI/CD pipelines
+    accessed: 2023-09-20
+
+  - family-names: Mui.com
+    url: https://mui.com/
+    title: MUI: The React component library you always wanted
+    accessed: 2023-09-20
+
+  - family-names: Openai.com
+    url: https://platform.openai.com/docs/introduction
+    accessed: 2023-09-20
+
+  - family-names: Sonarsource.com
+    url: https://www.sonarsource.com/products/sonarqube/
+    title: Code quality tool & secure analysis with SonarQube
+    accessed: 2023-09-20
+
+  - family-names: Django Project
+    url: https://www.djangoproject.com/
+    title: Django
+    accessed: 2023-09-20
+
+  - family-names: Christie
+    given-names: T.
+    url: https://www.django-rest-framework.org/
+    title: Home - Django REST framework
+    accessed: 2023-09-20
+
+  - url: https://pypi.org/project/django-cors-headers/
+    title: Django-cors-headers
+    accessed: 2023-09-20

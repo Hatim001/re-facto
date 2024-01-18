@@ -1,0 +1,12 @@
+
+.hero-fixer{
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    z-index: -1;
+    width: 75%;
+    display: flex;
+    align-items: flex-end;
+    transform: translate(0px, 0px) rotate(0deg) scale(1, 1);
+
+}
