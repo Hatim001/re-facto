@@ -11,9 +11,9 @@
 
 ## About
 
-Introducing Re-Factor, your trusty companion in the quest for cleaner code! This GitHub application harnesses the power of state-of-the-art Language Model models to revolutionize the way you commit. Say goodbye to messy, convoluted code and hello to elegance and efficiency.
+Introducing Re-Facto, your trusty companion in the quest for cleaner code! This GitHub application harnesses the power of state-of-the-art Language Model models to revolutionize the way you commit. Say goodbye to messy, convoluted code and hello to elegance and efficiency.
 
-Re-Factor analyzes your commits in any programming language, employing advanced Language Model models to understand the intricacies of your codebase. It doesn't just stop at identifying issues; it actively suggests improvements, refactoring your code to align with best practices and coding standards.
+Re-Facto analyzes your commits in any programming language, employing advanced Language Model models to understand the intricacies of your codebase. It doesn't just stop at identifying issues; it actively suggests improvements, refactoring your code to align with best practices and coding standards.
 
 Re-Facto is a comprehensive Django and React application designed to streamline your coding process. With a Django backend and a React frontend, Re-Facto provides a seamless user experience, allowing you to focus on what matters most: your code. 
 
